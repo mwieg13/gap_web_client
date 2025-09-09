@@ -9,7 +9,7 @@ This project is a simple web application that combines a React frontend with a F
 ## Project Structure
 
 ```
-fastapi-react-app
+gap_web_client
 ├── backend
 │   ├── app
 │   │   ├── main.py          # Entry point for the FastAPI application
