@@ -4,6 +4,8 @@ Agentic application that helps with all stages of goal creation and completion.
 
 # General Design
 
+![System Design image](images/system_design.png)
+
 This project is a simple web application that combines a React frontend with a FastAPI backend. There is a PostGreSQL database linked to the backend.
 
 ## Project Structure
