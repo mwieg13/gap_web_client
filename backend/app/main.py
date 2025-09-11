@@ -1,30 +1,28 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.db.pg_client import PostgresClient
-from app.db.models.goals import Goal_Model
+from app.db.data_aggregator import DataAggregator
 
-# todo: move this guy into a secure location
+# TODO: move this guy into a secure location
 DATABASE_URL = "postgresql://postgres:root@localhost:5432/gap"
 
 database = PostgresClient()
-database.connect(DATABASE_URL)
+aggregator = DataAggregator(database)
 
-print(f'Is the database connected? -- {database.connected}')
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on application startup
+    print("FastAPI -- starting")
+    database.connect(DATABASE_URL)
 
-# Get a session
-session = database.get_session()
+    yield
 
-# Query all goals
-goals = session.query(Goal_Model).all()
+    # Code to run on application shutdown
+    print("FastAPI -- shutting down")
+    database.disconnect()
 
-print(f'Retrieved {len(goals)} goals.')
-
-for goal in goals:
-    print(goal._id, goal.created_on, goal.state)
-
-session.close()
-
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def read_root():
@@ -34,4 +32,7 @@ def read_root():
 def read_item(item_id: int):
     return {"item_id": item_id, "name": f"Item {item_id}"}
 
+@app.get("/goal/{goal_id}")
+def get_goal(goal_id: int):
+    return aggregator.collectData(goal_id).model_dump_json()
 
