@@ -20,9 +20,11 @@ This project is intended to become a full-stack application that has an integrat
 
 ![System Design image](images/system_design.png)
 
-This project is a simple web application that combines a React frontend with a FastAPI backend. There is a PostGreSQL database linked to the backend.
+This project has a very simplstic system design. It combines a React frontend with a FastAPI backend and a PostGreSQL database.
 
-The system design is very simplistic. Most of the complexity in this project comes from the design decisions related to database table management and the AI integration with that data.
+Where the project becomes more complex is in the design decisions related to database table management and the AI integration with that data.
+
+In order to assist the AI in asking pointed questions, care has been taken from the beginning in designing the database. What might have been a very simple database design for a web form has been broken up in such a way as to work effectively with an AI.
 
 ## Project Structure
 
