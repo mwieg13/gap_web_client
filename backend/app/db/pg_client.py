@@ -4,7 +4,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.db.models.goals import Goal_Model
+from app.db.models.goal_model import Goal_Model
+from app.db.models.goal_data_model import Goal_Data_Model
+from app.db.models.goal_steps_model import Goal_Steps_Model
+from app.db.models.goal_obstacles_model import Goal_Obstacles_Model
 
 class PostgresClient:
 
@@ -51,3 +54,54 @@ class PostgresClient:
             session.close()
 
         return goal
+
+    def get_goal_data(self, goal_id: int):
+        if not self.is_connected():
+            raise Exception("Database not connected. Call connect() first.")
+
+        session = self.SessionLocal()
+
+        try:    
+            data = session.query(Goal_Data_Model).where(Goal_Data_Model._id == goal_id).first()
+
+            if data is None:
+                print(f'WARN - No results returned for goal_id: {goal_id}')
+
+        finally:
+            session.close()
+
+        return data
+    
+    def get_goal_steps(self, goal_id: int):
+        if not self.is_connected():
+            raise Exception("Database not connected. Call connect() first.")
+
+        session = self.SessionLocal()
+
+        try:    
+            data = session.query(Goal_Steps_Model).where(Goal_Steps_Model.goal_id == goal_id).all()
+
+            if data is None:
+                print(f'WARN - No results returned for goal_id: {goal_id}')
+
+        finally:
+            session.close()
+
+        return data
+    
+    def get_goal_obstacles(self, goal_id: int):
+        if not self.is_connected():
+            raise Exception("Database not connected. Call connect() first.")
+
+        session = self.SessionLocal()
+
+        try:    
+            data = session.query(Goal_Obstacles_Model).where(Goal_Obstacles_Model.goal_id == goal_id).all()
+
+            if data is None:
+                print(f'WARN - No results returned for goal_id: {goal_id}')
+
+        finally:
+            session.close()
+
+        return data

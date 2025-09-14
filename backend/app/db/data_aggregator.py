@@ -7,11 +7,29 @@ class DataAggregator:
         self.database = database
 
     def collectData(self, goal_id: int):
-        goal = GoalSchema()
+        data = GoalSchema()
 
         goalModel = self.database.get_goal(goal_id)
+        goalDataModel = self.database.get_goal_data(goal_id)
 
-        if goalModel is not None:
-            goal.populate(goalModel)
+        goalStepModels = self.database.get_goal_steps(goal_id)
+        goalObstacleModels = self.database.get_goal_obstacles(goal_id)
 
-        return goal
+        # if we didn't get data from the goal table, assume that all further queries returned no data
+        if goalModel is None:
+            return data
+        
+        data.populate(goalModel)
+
+        if goalDataModel is not None:
+            data.add_data(goalDataModel)
+
+        if goalStepModels is not None:
+            for model in goalStepModels:
+                data.add_step(model)
+
+        if goalObstacleModels is not None:
+            for model in goalObstacleModels:
+                data.add_obstacle(model)
+
+        return data

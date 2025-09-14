@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
+from fastapi.responses import Response
+
 from app.db.pg_client import PostgresClient
 from app.db.data_aggregator import DataAggregator
 
@@ -34,5 +36,5 @@ def read_item(item_id: int):
 
 @app.get("/goal/{goal_id}")
 def get_goal(goal_id: int):
-    return aggregator.collectData(goal_id).model_dump_json()
-
+    json_str = aggregator.collectData(goal_id).model_dump_json(indent=2)
+    return Response(content=json_str, media_type="application/json")
