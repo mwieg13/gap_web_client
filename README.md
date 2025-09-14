@@ -14,7 +14,7 @@ This project is intended to become a full-stack application that has an integrat
     3. Be able to perform CRUD operations from a client-facing web interface.
 3. Integrate an AI agent into the application, using n8n to design an AI companion.
 4. Allow the AI to talk to the user, having intelligent conversations about how a goal is going.
-5. Allow the AI to manipulate the application as a user would, updating completed steps (of a goal) or updating obstacles (of a goal).
+5. Allow the AI to manipulate the application as a user would, updating completed steps or obstacles (of a goal).
 
 # General Design
 
